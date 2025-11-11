@@ -1,1 +1,144 @@
+#include <iostream>
+#include <string>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+int main() {
+//declarations
+const int MAX_EMPS = 35;
+string names[MAX_EMPS];
+double hours[MAX_EMPS];
+int wholeTips[MAX_EMPS];
+double exact[MAX_EMPS];
+double rem[MAX_EMPS];
+int base[MAX_EMPS];
+int numEmps;
+int totalTips;
+double totalHours = 0;
+string again;
+int distributed = 0;
+int leftover;
+const double epsilon = 1e-9;
+do {
+cout << "Welcome to the Does Tip Calc...short for calculator...please enter the number of employees (1-35) that will be receiving tips or enter 999 to quit: " << endl;
+cin >> numEmps;
+  if(numEmps == 999){
+  cout << "Thank you for using the Does Tip Calc. Bye!" << endl;
+  return 0;
+}
+    while(1 > numEmps || numEmps > MAX_EMPS){
+    cout << "Please enter a valid number of employees (1-35) or 999 to quit: " << endl;
+    cin >> numEmps;
+      if(numEmps == 999){
+      cout << "Thank you for using the Does Tip Calc. Bye!" << endl;
+      return 0;
+  }
+}
+      cout << "Enter the whole dollar amount for the total tips over the last two weeks: " << endl;
+      cin >> totalTips;
+        while(totalTips <= 0){
+        cout << "Tips cannot be negative or zero, please enter a valid dollar amount: " << endl;
+        cin >> totalTips;
+}
+           for(int i = 0; i < numEmps; i++){
+            cout << "Enter the name of the employee receiving tips " << (i+1) << ": ";
+            cin >> names[i];
+            cout << "Enter the number of hours worked for: " << names[i] << endl;
+            cin >> hours[i];
+              while(hours[i] <= 0){
+              cout << "Hours cannot be negative or zero, please enter a valid number of hours: " << endl;
+              cin >> hours[i];
+}
+              totalHours += hours[i];
+}
+                if(totalHours == 0){
+                cout << "Erm...thats awkward. Looks like you BROKE ME!!!!!" << endl;
+                return 0;
+}
+                  for(int i = 0; i < numEmps; i++){
+                  exact[i] = ((hours[i] / totalHours) * (totalTips));
+                  base[i] = (floor(exact[i]));
+                  rem[i] = (exact[i] - base[i]);
+                  wholeTips[i] = base[i];
+                  distributed += base[i];
+}
+                  leftover = (totalTips - distributed);
+                    if(leftover < 0){
+                    cout << "Erm...thats awkward. Looks like you BROKE ME!!!!!" << endl;
+                    return 0;
+}
+                   if (leftover > 0) {
+    while (leftover > 0) {
+        int awardedThisSweep = 0;
+        while (leftover > 0 && awardedThisSweep < numEmps) {
+            int bestIndex = -1;
+            double bestRem = -1.0;
+            double bestHours = -1.0;
+            for (int i = 0; i < numEmps; ++i) {
+                // skip if this remainder was already used this pass
+                if (rem[i] < 0.0) continue;
 
+                if (rem[i] > bestRem + epsilon) {
+                    bestIndex = i;
+                    bestRem   = rem[i];
+                    bestHours = hours[i];
+                } else if (fabs(rem[i] - bestRem) <= epsilon) {
+                    // tie on remainder: break ties by larger hours, then by earlier input
+                    if (hours[i] > bestHours + epsilon) {
+                        bestIndex = i;
+                        bestRem   = rem[i];
+                        bestHours = hours[i];
+                    }
+                }
+            }
+
+            if (bestIndex == -1) break;
+
+            wholeTips[bestIndex] += 1;
+            rem[bestIndex] = -1.0;
+            leftover--;
+            awardedThisSweep++;
+        }
+
+        // reset remainders for the next sweep
+        for (int i = 0; i < numEmps; i++) {
+            rem[i] = exact[i] - base[i];
+        }
+    }
+} 
+int sumWhole = 0;
+for(int i = 0; i < numEmps; i++) {
+sumWhole += wholeTips[i];
+}
+if (sumWhole != totalTips) {
+cout << "Error: Distributed total (" <<sumWhole << ") does not match entered total (" << totalTips << ")." << endl;
+return 0;
+}
+cout << fixed << setprecision(2); // formats hours to two decimals
+
+cout << "\n----- Tip Distribution Results -----\n";
+cout << "Total Tips: $" << totalTips
+     << " | Total Hours: " << totalHours
+     << " | Employees: " << numEmps << endl;
+cout << "--------------------------------------\n";
+
+// Column headers
+cout << left << setw(16) << "Name"
+     << right << setw(10) << "Hours"
+     << right << setw(10) << "Tips" << endl;
+cout << "--------------------------------------\n";
+
+// Row data
+for (int i = 0; i < numEmps; i++) {
+    cout << left << setw(12) << names[i]   // name column
+         << right << setw(10) << hours[i]  // hours column
+         << right << setw(10) << wholeTips[i] << endl;  // tips column
+}
+
+cout << "--------------------------------------\n";
+cout << "All $" << sumWhole << " successfully distributed!\n";
+return 0;   
+} while (again == "Y" || again == "y");
+cout << "Thanks for using the Does Tip Calc! Goodbye.\n";
+return 0;
+}

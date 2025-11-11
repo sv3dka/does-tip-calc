@@ -35,10 +35,12 @@ If you would like to restart and calculate more tips, please enter Y. If not, en
    git clone https://github.com/sv3dka/does-tip-calc.git
    cd does-tip-calc
 3. Compile it
-g++ tipcalc.cpp -o tipcalc.exe
+   ```bash
+   g++ tipcalc.cpp -o tipcalc.exe
 
-4. Run it
-./tipcalc.exe
+5. Run it
+   ```bash
+   ./tipcalc.exe
 
 ## License
 This project is licensed under the MIT License — free to use, modify, and share.

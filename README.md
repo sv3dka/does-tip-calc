@@ -2,6 +2,7 @@
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Status](https://img.shields.io/badge/status-Stable-success.svg)
+![Domino's Approved](https://img.shields.io/badge/Domino's_Approved-006491?style=for-the-badge&logo=dominos-pizza&logoColor=white)
 
 
 # Does Tip Calc 

@@ -15,7 +15,7 @@ int base[MAX_EMPS];
 int numEmps;
 int totalTips;
 double totalHours;
-char again;
+char again = 'Y';
 int distributed;
 int leftover;
 const double epsilon = 1e-9;
@@ -23,12 +23,22 @@ do {
 totalHours = 0;
 distributed = 0;
 leftover = 0;
+
+for (int i = 0; i < MAX_EMPS; ++i) {
+        wholeTips[i] = 0;
+        rem[i] = 0.0;
+        base[i] = 0;
+        exact[i] = 0.0;
+        hours[i] = 0.0;
+        names[i].clear();
+    }
+
 cout << "Welcome to the Does Tip Calc...short for calculator...please enter the number of employees (1-35) that will be receiving tips or enter 999 to quit: " << endl;
 cin >> numEmps;
   if(numEmps == 999){
   cout << "Thank you for using the Does Tip Calc. Bye!" << endl;
   again = 'N';
-  if (again == 'N') break;
+  break;
 }
     while(1 > numEmps || numEmps > MAX_EMPS){
     cout << "Please enter a valid number of employees (1-35) or 999 to quit: " << endl;
@@ -39,6 +49,7 @@ cin >> numEmps;
       break;
   }
 }
+if (again == 'N') break;
       cout << "Enter the whole dollar amount for the total tips over the last two weeks: " << endl;
       cin >> totalTips;
         while(totalTips <= 0){
@@ -129,15 +140,15 @@ cout << "--------------------------------------\n";
 
 // Column headers
 cout << left << setw(16) << "Name"
-     << right << setw(10) << "Hours"
-     << right << setw(10) << "Tips" << endl;
+     << right << setw(12) << "Hours"
+     << right << setw(12) << "Tips" << endl;
 cout << "--------------------------------------\n";
 
 // Row data
 for (int i = 0; i < numEmps; i++) {
     cout << left << setw(16) << names[i]   // name column
-         << right << setw(10) << hours[i]  // hours column
-         << right << setw(10) << wholeTips[i] << endl;  // tips column
+         << right << setw(12) << hours[i]  // hours column
+         << right << setw(12) << wholeTips[i] << endl;  // tips column
 }
 
 cout << "--------------------------------------\n";

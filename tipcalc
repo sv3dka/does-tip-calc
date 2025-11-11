@@ -14,24 +14,29 @@ double rem[MAX_EMPS];
 int base[MAX_EMPS];
 int numEmps;
 int totalTips;
-double totalHours = 0;
-string again;
-int distributed = 0;
+double totalHours;
+char again;
+int distributed;
 int leftover;
 const double epsilon = 1e-9;
 do {
+totalHours = 0;
+distributed = 0;
+leftover = 0;
 cout << "Welcome to the Does Tip Calc...short for calculator...please enter the number of employees (1-35) that will be receiving tips or enter 999 to quit: " << endl;
 cin >> numEmps;
   if(numEmps == 999){
   cout << "Thank you for using the Does Tip Calc. Bye!" << endl;
-  return 0;
+  again = 'N';
+  if (again == 'N') break;
 }
     while(1 > numEmps || numEmps > MAX_EMPS){
     cout << "Please enter a valid number of employees (1-35) or 999 to quit: " << endl;
     cin >> numEmps;
       if(numEmps == 999){
       cout << "Thank you for using the Does Tip Calc. Bye!" << endl;
-      return 0;
+      again = 'N';
+      break;
   }
 }
       cout << "Enter the whole dollar amount for the total tips over the last two weeks: " << endl;
@@ -53,7 +58,7 @@ cin >> numEmps;
 }
                 if(totalHours == 0){
                 cout << "Erm...thats awkward. Looks like you BROKE ME!!!!!" << endl;
-                return 0;
+                continue;
 }
                   for(int i = 0; i < numEmps; i++){
                   exact[i] = ((hours[i] / totalHours) * (totalTips));
@@ -65,7 +70,7 @@ cin >> numEmps;
                   leftover = (totalTips - distributed);
                     if(leftover < 0){
                     cout << "Erm...thats awkward. Looks like you BROKE ME!!!!!" << endl;
-                    return 0;
+                    continue;
 }
                    if (leftover > 0) {
     while (leftover > 0) {
@@ -112,7 +117,7 @@ sumWhole += wholeTips[i];
 }
 if (sumWhole != totalTips) {
 cout << "Error: Distributed total (" <<sumWhole << ") does not match entered total (" << totalTips << ")." << endl;
-return 0;
+continue;
 }
 cout << fixed << setprecision(2); // formats hours to two decimals
 
@@ -130,15 +135,16 @@ cout << "--------------------------------------\n";
 
 // Row data
 for (int i = 0; i < numEmps; i++) {
-    cout << left << setw(12) << names[i]   // name column
+    cout << left << setw(16) << names[i]   // name column
          << right << setw(10) << hours[i]  // hours column
          << right << setw(10) << wholeTips[i] << endl;  // tips column
 }
 
 cout << "--------------------------------------\n";
 cout << "All $" << sumWhole << " successfully distributed!\n";
-return 0;   
-} while (again == "Y" || again == "y");
+cout << "If you would like to restart and calculate more tips, please enter Y: ";
+cin >> again;   
+} while (again == 'Y' || again == 'y');
 cout << "Thanks for using the Does Tip Calc! Goodbye.\n";
 return 0;
 }
